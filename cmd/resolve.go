@@ -86,8 +86,8 @@ var resolveCmd = &cobra.Command{
 					for i := 7 + overLen; i < len(tmpArr); i++ {
 						tmpArr[i-overLen] = tmpArr[i]
 					}
+					tmpArr = tmpArr[:len(tmpArr)-1]
 				}
-				tmpArr = tmpArr[:len(tmpArr)-1]
 
 				// moments prehandle
 				if tableMeta.TableName == "moments" {
@@ -103,7 +103,6 @@ var resolveCmd = &cobra.Command{
 						}
 						tmpArr = tmpArr[:len(tmpArr)-1]
 					}
-
 				}
 
 				// validate line num
