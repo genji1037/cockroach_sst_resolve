@@ -166,6 +166,8 @@ var resolveCmd = &cobra.Command{
 					if err != nil {
 						panic(err)
 					}
+					sqlBuf.RowNum = 0
+					sqlBuf.Buf = bytes.Buffer{}
 				}
 
 			}
