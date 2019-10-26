@@ -80,8 +80,23 @@ var resolveCmd = &cobra.Command{
 				}
 				tableMeta := tableMapping[int(tableNo)]
 
+				if tableMeta.TableName == "moments" {
+					if len(tmpArr) > tableMeta.LineNum {
+						overLen := len(tmpArr) - tableMeta.LineNum // 朋友圈内容含有/的长度会超出标准长度
+						momentContent := ""
+						for i := 0; i <= overLen; i++ {
+							momentContent = momentContent + tmpArr[12+i] + "/"
+						}
+						tmpArr[12] = momentContent[:len(momentContent)-1]
+						for i := 13 + overLen; i < len(tmpArr); i++ {
+							tmpArr[i-overLen] = tmpArr[i]
+						}
+					}
+
+				}
+
 				// validate line num
-				if len(tmpArr) != tableMeta.LineNum {
+				if len(tmpArr) < tableMeta.LineNum {
 					fmt.Printf("[%d] expect lineNo [%d] actual lineNo[%d].\n", lineNo, tableMeta.LineNum, len(tmpArr))
 					continue
 				}
@@ -125,7 +140,7 @@ var resolveCmd = &cobra.Command{
 
 		// flush all sqlbufs
 		for _, sqlBuf := range sqlBufs {
-			_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values " + sqlBuf.Buf.String())
+			_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values " + sqlBuf.Buf.String() + ";")
 			if err != nil {
 				panic(err)
 			}
