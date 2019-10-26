@@ -60,7 +60,21 @@ var resolveCmd = &cobra.Command{
 
 			lineNo++
 
-			line, _, err := bufReader.ReadLine() // 按行读
+			line, isPrefix, err := bufReader.ReadLine() // 按行读
+			for isPrefix {
+				oldLine := string(line)
+				var newLine []byte
+				newLine, isPrefix, err = bufReader.ReadLine()
+				if err != nil {
+					if err == io.EOF {
+						err = nil
+						break
+					}
+				} else {
+					line = []byte(oldLine + string(newLine))
+				}
+			}
+
 			if err != nil {
 				if err == io.EOF {
 					err = nil
@@ -81,12 +95,20 @@ var resolveCmd = &cobra.Command{
 				tableMeta := tableMapping[int(tableNo)]
 
 				// prehandle
-				if tmpArr[7] != "??? => " {
+				if tmpArr[7] == "??? => " {
+
+				} else if tmpArr[9] == "??? => " {
+					overLen := 2
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else {
 					overLen := 1
 					for i := 7 + overLen; i < len(tmpArr); i++ {
 						tmpArr[i-overLen] = tmpArr[i]
 					}
-					tmpArr = tmpArr[:len(tmpArr)-1]
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				}
 
 				// moments prehandle
