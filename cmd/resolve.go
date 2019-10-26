@@ -101,7 +101,7 @@ var resolveCmd = &cobra.Command{
 						for i := 13 + overLen; i < len(tmpArr); i++ {
 							tmpArr[i-overLen] = tmpArr[i]
 						}
-						tmpArr = tmpArr[:len(tmpArr)-1]
+						tmpArr = tmpArr[:len(tmpArr)-overLen]
 					}
 				}
 
