@@ -103,6 +103,8 @@ var resolveCmd = &cobra.Command{
 						tmpArr[i-overLen] = tmpArr[i]
 					}
 					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[8] == "TUPLE" {
+
 				} else {
 					overLen := 1
 					for i := 7 + overLen; i < len(tmpArr); i++ {
