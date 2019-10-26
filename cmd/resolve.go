@@ -68,8 +68,8 @@ var resolveCmd = &cobra.Command{
 				}
 			} else {
 				tmpArr := strings.Split(string(line), "/")
-				if len(tmpArr) < 3 {
-					fmt.Printf("[%d] can not resolve table no.\n", lineNo)
+				if len(tmpArr) < 8 {
+					fmt.Printf("[%d] len [%d] to small.\n", lineNo, len(tmpArr))
 					continue
 				}
 				tableNoStr := tmpArr[2]
@@ -80,6 +80,16 @@ var resolveCmd = &cobra.Command{
 				}
 				tableMeta := tableMapping[int(tableNo)]
 
+				// prehandle
+				if tmpArr[7] != "??? => " {
+					overLen := 1
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+				}
+				tmpArr = tmpArr[:len(tmpArr)-1]
+
+				// moments prehandle
 				if tableMeta.TableName == "moments" {
 					if len(tmpArr) > tableMeta.LineNum {
 						overLen := len(tmpArr) - tableMeta.LineNum // 朋友圈内容含有/的长度会超出标准长度
@@ -91,12 +101,13 @@ var resolveCmd = &cobra.Command{
 						for i := 13 + overLen; i < len(tmpArr); i++ {
 							tmpArr[i-overLen] = tmpArr[i]
 						}
+						tmpArr = tmpArr[:len(tmpArr)-1]
 					}
 
 				}
 
 				// validate line num
-				if len(tmpArr) < tableMeta.LineNum {
+				if len(tmpArr) != tableMeta.LineNum {
 					fmt.Printf("[%d] expect lineNo [%d] actual lineNo[%d].\n", lineNo, tableMeta.LineNum, len(tmpArr))
 					continue
 				}
