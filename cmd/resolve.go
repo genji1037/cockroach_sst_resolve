@@ -131,6 +131,18 @@ var resolveCmd = &cobra.Command{
 					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				} else if tmpArr[8] == "TUPLE" {
 
+				} else if tmpArr[10] == "TUPLE" {
+					overLen := 2
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[11] == "TUPLE" {
+					overLen := 3
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				} else if tmpArr[12] == "TUPLE" {
 					overLen := 4
 					for i := 7 + overLen; i < len(tmpArr); i++ {
