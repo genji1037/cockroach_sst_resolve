@@ -25,7 +25,7 @@ func init() {
 
 func initKVSqlMapping() map[int]*types.TableMeta {
 	tableMapping := map[int]*types.TableMeta{
-		// 65 user_token_info 不解析
+		// 65 user_token_info 不解析, 11,15 解析不出来
 		60: {
 			TableName:    "moments",
 			LineNum:      57,
@@ -37,6 +37,12 @@ func initKVSqlMapping() map[int]*types.TableMeta {
 			LineNum:      17,
 			ColumnsIndex: []int{4, 10, 12, 14, 16},
 			RowTemplate:  "(%s,%s,'%s',%s,'%s')",
+		},
+		58: {
+			TableName:    "friend_notify",
+			LineNum:      23,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
+			RowTemplate:  "(%s,'%s','%s',%s,%s,'%s','%s','%s')",
 		},
 	}
 	return tableMapping
@@ -117,8 +123,26 @@ var resolveCmd = &cobra.Command{
 						tmpArr[i-overLen] = tmpArr[i]
 					}
 					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[10] == "??? => " {
+					overLen := 3
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				} else if tmpArr[8] == "TUPLE" {
 
+				} else if tmpArr[12] == "TUPLE" {
+					overLen := 4
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[13] == "TUPLE" {
+					overLen := 5
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				} else {
 					overLen := 1
 					for i := 7 + overLen; i < len(tmpArr); i++ {
