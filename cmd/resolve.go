@@ -164,9 +164,6 @@ var resolveCmd = &cobra.Command{
 					}
 					sqlBufs[tableMeta.TableName] = sqlBuf
 				}
-				if sqlBuf.RowNum > 0 {
-					sqlBuf.Buf.WriteString(",\n")
-				}
 
 				_, ok = sqlBuf.PKs[tmpArr[4]]
 				if ok { // 主键冲突
@@ -174,6 +171,10 @@ var resolveCmd = &cobra.Command{
 					continue
 				}
 				sqlBuf.PKs[tmpArr[4]] = struct{}{}
+
+				if sqlBuf.RowNum > 0 {
+					sqlBuf.Buf.WriteString(",\n")
+				}
 				sqlBuf.Buf.WriteString(sqlRowPart)
 				sqlBuf.RowNum++
 
@@ -193,6 +194,9 @@ var resolveCmd = &cobra.Command{
 
 		// flush all sqlbufs
 		for _, sqlBuf := range sqlBufs {
+			if sqlBuf.RowNum == 0 {
+				continue
+			}
 			_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values \n" + sqlBuf.Buf.String() + ";\n")
 			if err != nil {
 				panic(err)
