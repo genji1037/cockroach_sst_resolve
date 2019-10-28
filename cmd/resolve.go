@@ -160,12 +160,20 @@ var resolveCmd = &cobra.Command{
 						TableNo:   int(tableNo),
 						Buf:       bytes.Buffer{},
 						RowNum:    0,
+						PKs:       make(map[string]struct{}),
 					}
 					sqlBufs[tableMeta.TableName] = sqlBuf
 				}
 				if sqlBuf.RowNum > 0 {
 					sqlBuf.Buf.WriteString(",\n")
 				}
+
+				_, ok = sqlBuf.PKs[tmpArr[4]]
+				if ok { // 主键冲突
+					fmt.Printf("pk [%s] conflict skip it.\n", tmpArr[4])
+					continue
+				}
+				sqlBuf.PKs[tmpArr[4]] = struct{}{}
 				sqlBuf.Buf.WriteString(sqlRowPart)
 				sqlBuf.RowNum++
 

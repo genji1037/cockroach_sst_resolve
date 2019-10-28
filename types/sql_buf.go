@@ -7,4 +7,5 @@ type SqlBuf struct {
 	TableNo   int
 	Buf       bytes.Buffer
 	RowNum    int
+	PKs       map[string]struct{}
 }
