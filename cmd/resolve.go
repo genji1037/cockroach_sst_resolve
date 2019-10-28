@@ -25,7 +25,24 @@ func init() {
 
 func initKVSqlMapping() map[int]*types.TableMeta {
 	tableMapping := map[int]*types.TableMeta{
-		// 65 user_token_info 不解析, 11,15 解析不出来
+		51: {
+			TableName:    "comment",
+			LineNum:      39,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38},
+			RowTemplate:  "(%s,%s,%s,%s,'%s','%s','%s','%s',%s,'%s','%s',%s,'%s','%s',%s,%s)",
+		},
+		52: {
+			TableName:    "comment_opinion",
+			LineNum:      23,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
+			RowTemplate:  "(%s,'%s',%s,%s,'%s','%s',%s,'%s')",
+		},
+		58: {
+			TableName:    "friend_notify",
+			LineNum:      23,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
+			RowTemplate:  "(%s,'%s','%s',%s,%s,'%s','%s','%s')",
+		},
 		60: {
 			TableName:    "moments",
 			LineNum:      57,
@@ -38,11 +55,17 @@ func initKVSqlMapping() map[int]*types.TableMeta {
 			ColumnsIndex: []int{4, 10, 12, 14, 16},
 			RowTemplate:  "(%s,%s,'%s',%s,'%s')",
 		},
-		58: {
-			TableName:    "friend_notify",
+		65: {
+			TableName:    "user_token_info",
 			LineNum:      23,
 			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
-			RowTemplate:  "(%s,'%s','%s',%s,%s,'%s','%s','%s')",
+			RowTemplate:  "(%s,'%s','%s','%s',%s,'%s',%s,'%s')",
+		},
+		76: {
+			TableName:    "community_member",
+			LineNum:      25,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24},
+			RowTemplate:  "(%s,%s,'%s',%s,%s,'%s','%s',%s,%s)",
 		},
 	}
 	return tableMapping
