@@ -10,6 +10,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var inputFilePath, outputFilePath string
@@ -39,6 +40,8 @@ var resolveCmd = &cobra.Command{
 	Short: "translate human readable cockroach kv to sql",
 	Long:  `translate human readable cockroach kv to sql`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		beginTs := time.Now()
 
 		inputFile, err := os.OpenFile(inputFilePath, 0, 0644)
 		if err != nil {
@@ -138,7 +141,13 @@ var resolveCmd = &cobra.Command{
 				// build insert sql
 				values := make([]interface{}, 0)
 				for _, index := range tableMeta.ColumnsIndex {
+
+					if strings.ContainsAny(tmpArr[index], "'") {
+						tmpArr[index] = strings.ReplaceAll(tmpArr[index], "'", "''")
+					}
+
 					values = append(values, tmpArr[index])
+
 				}
 
 				sqlRowPart := fmt.Sprintf(tableMeta.RowTemplate, values...)
@@ -181,6 +190,8 @@ var resolveCmd = &cobra.Command{
 				panic(err)
 			}
 		}
+
+		fmt.Printf("resloved %d lines, cost %s.\n", lineNo, time.Now().Sub(beginTs))
 
 	},
 }
