@@ -55,12 +55,12 @@ func initKVSqlMapping() map[int]*types.TableMeta {
 			ColumnsIndex: []int{4, 10, 12, 14, 16},
 			RowTemplate:  "(%s,%s,'%s',%s,'%s')",
 		},
-		65: {
-			TableName:    "user_token_info",
-			LineNum:      23,
-			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
-			RowTemplate:  "(%s,'%s','%s','%s',%s,'%s',%s,'%s')",
-		},
+		//65: {
+		//	TableName:    "user_token_info",
+		//	LineNum:      23,
+		//	ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
+		//	RowTemplate:  "(%s,'%s','%s','%s',%s,'%s',%s,'%s')",
+		//},
 		76: {
 			TableName:    "community_member",
 			LineNum:      25,
