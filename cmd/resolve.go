@@ -121,7 +121,7 @@ var resolveCmd = &cobra.Command{
 				}
 			} else {
 				tmpArr := strings.Split(string(line), "/")
-				if len(tmpArr) < 8 {
+				if len(tmpArr) < 15 {
 					fmt.Printf("[%d] len [%d] to small.\n", lineNo, len(tmpArr))
 					continue
 				}
