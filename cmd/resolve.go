@@ -25,11 +25,18 @@ func init() {
 
 func initKVSqlMapping() map[int]*types.TableMeta {
 	tableMapping := map[int]*types.TableMeta{
+		// 65 user_token_info 不解析
 		60: {
 			TableName:    "moments",
 			LineNum:      57,
 			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56},
 			RowTemplate:  "(%s, '%s', '%s', %s, %s, '%s', '%s', '%s', %s, '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', %s, %s)",
+		},
+		63: {
+			TableName:    "timeline",
+			LineNum:      17,
+			ColumnsIndex: []int{4, 10, 12, 14, 16},
+			RowTemplate:  "(%s,%s,'%s',%s,'%s')",
 		},
 	}
 	return tableMapping
