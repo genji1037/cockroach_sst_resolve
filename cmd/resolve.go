@@ -164,14 +164,14 @@ var resolveCmd = &cobra.Command{
 					sqlBufs[tableMeta.TableName] = sqlBuf
 				}
 				if sqlBuf.RowNum > 0 {
-					sqlBuf.Buf.WriteString(",")
+					sqlBuf.Buf.WriteString(",\n")
 				}
 				sqlBuf.Buf.WriteString(sqlRowPart)
 				sqlBuf.RowNum++
 
 				// check rowNum if over 50
 				if sqlBuf.RowNum >= 50 {
-					_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values " + sqlBuf.Buf.String() + ";")
+					_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values \n" + sqlBuf.Buf.String() + ";\n")
 					if err != nil {
 						panic(err)
 					}
@@ -185,7 +185,7 @@ var resolveCmd = &cobra.Command{
 
 		// flush all sqlbufs
 		for _, sqlBuf := range sqlBufs {
-			_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values " + sqlBuf.Buf.String() + ";")
+			_, err := outputFile.WriteString("insert into " + sqlBuf.TableName + " values \n" + sqlBuf.Buf.String() + ";\n")
 			if err != nil {
 				panic(err)
 			}
