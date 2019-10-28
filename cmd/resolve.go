@@ -95,7 +95,11 @@ var resolveCmd = &cobra.Command{
 					fmt.Printf("[%d] convert [%s] to table no failed: %s.\n", lineNo, tableNoStr, err.Error())
 					continue
 				}
-				tableMeta := tableMapping[int(tableNo)]
+				tableMeta, ok := tableMapping[int(tableNo)]
+				if !ok {
+					fmt.Printf("[%d] unknown table no [%d] skip it.\n", lineNo, tableNo)
+					continue
+				}
 
 				// prehandle
 				if tmpArr[7] == "??? => " {
