@@ -43,11 +43,29 @@ func initKVSqlMapping() map[int]*types.TableMeta {
 			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
 			RowTemplate:  "(%s,'%s','%s',%s,%s,'%s','%s','%s')",
 		},
+		59: {
+			TableName:    "message",
+			LineNum:      29,
+			ColumnsIndex: []int{10, 12, 14, 16, 18, 20, 22, 24, 26, 28},
+			RowTemplate:  "(%s,'%s',%s,%s,%s,%s,%s,'%s','%s','%s')",
+		},
 		60: {
 			TableName:    "moments",
 			LineNum:      57,
 			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56},
 			RowTemplate:  "(%s, '%s', '%s', %s, %s, '%s', '%s', '%s', %s, '%s', '%s', %s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', %s, %s)",
+		},
+		61: {
+			TableName:    "opinion",
+			LineNum:      27,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26},
+			RowTemplate:  "(%s,%s,%s,%s,'%s','%s',%s,'%s','%s','%s')",
+		},
+		62: {
+			TableName:    "report_spam",
+			LineNum:      23,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
+			RowTemplate:  "(%s,%s,'%s','%s',%s,'%s','%s','%s')",
 		},
 		63: {
 			TableName:    "timeline",
@@ -61,6 +79,42 @@ func initKVSqlMapping() map[int]*types.TableMeta {
 		//	ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22},
 		//	RowTemplate:  "(%s,'%s','%s','%s',%s,'%s',%s,'%s')",
 		//},
+		67: {
+			TableName:    "weedfs_file",
+			LineNum:      41,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40},
+			RowTemplate:  "(%s,'%s',%s,'%s','%s','%s',%s,%s,'%s',%s,%s,'%s','%s','%s','%s','%s',%s)",
+		},
+		71: {
+			TableName:    "community",
+			LineNum:      51,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50},
+			RowTemplate:  "(%s,'%s','%s','%s',%s,'%s','%s',%s,%s,%s,%s,'%s',%s,%s,'%s','%s',%s,'%s','%s',%s,%s,%s)",
+		},
+		72: {
+			TableName:    "community_comment",
+			LineNum:      39,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38},
+			RowTemplate:  "(%s,%s,%s,%s,'%s','%s','%s','%s',%s,'%s','%s',%s,'%s','%s',%s,%s)",
+		},
+		73: {
+			TableName:    "community_file",
+			LineNum:      41,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40},
+			RowTemplate:  "(%s,'%s',%s,'%s','%s','%s',%s,%s,'%s',%s,%s,'%s','%s','%s','%s','%s',%s)",
+		},
+		74: {
+			TableName:    "community_post",
+			LineNum:      45,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44},
+			RowTemplate:  "(%s,'%s','%s',%s,%s,'%s',%s,'%s',%s,'%s','%s',%s,'%s','%s','%s','%s','%s','%s',%s)",
+		},
+		75: {
+			TableName:    "community_opinion",
+			LineNum:      27,
+			ColumnsIndex: []int{4, 10, 12, 14, 16, 18, 20, 22, 24, 26},
+			RowTemplate:  "(%s,%s,%s,%s,'%s','%s',%s,'%s','%s','%s')",
+		},
 		76: {
 			TableName:    "community_member",
 			LineNum:      25,
@@ -202,6 +256,22 @@ var resolveCmd = &cobra.Command{
 						}
 						tmpArr[12] = momentContent[:len(momentContent)-1]
 						for i := 13 + overLen; i < len(tmpArr); i++ {
+							tmpArr[i-overLen] = tmpArr[i]
+						}
+						tmpArr = tmpArr[:len(tmpArr)-overLen]
+					}
+				}
+
+				//
+				if tableMeta.TableName == "community_file" {
+					if len(tmpArr) > tableMeta.LineNum {
+						overLen := len(tmpArr) - tableMeta.LineNum // 朋友圈内容含有/的长度会超出标准长度
+						content := ""
+						for i := 0; i <= overLen; i++ {
+							content = content + tmpArr[18+i] + "/"
+						}
+						tmpArr[18] = content[:len(content)-1]
+						for i := 19 + overLen; i < len(tmpArr); i++ {
 							tmpArr[i-overLen] = tmpArr[i]
 						}
 						tmpArr = tmpArr[:len(tmpArr)-overLen]
