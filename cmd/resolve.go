@@ -264,16 +264,30 @@ var resolveCmd = &cobra.Command{
 					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				}
 
-				// moments prehandle
-				if tableMeta.TableName == "moments" {
+				// 字段含/的
+				if tableMeta.TableName == "moments" || tableMeta.TableName == "community" || tableMeta.TableName == "community_post" {
 					if len(tmpArr) > tableMeta.LineNum {
-						overLen := len(tmpArr) - tableMeta.LineNum // 朋友圈内容含有/的长度会超出标准长度
-						momentContent := ""
+						overLen := len(tmpArr) - tableMeta.LineNum
+						content := ""
 						for i := 0; i <= overLen; i++ {
-							momentContent = momentContent + tmpArr[12+i] + "/"
+							content = content + tmpArr[12+i] + "/"
 						}
-						tmpArr[12] = momentContent[:len(momentContent)-1]
+						tmpArr[12] = content[:len(content)-1]
 						for i := 13 + overLen; i < len(tmpArr); i++ {
+							tmpArr[i-overLen] = tmpArr[i]
+						}
+						tmpArr = tmpArr[:len(tmpArr)-overLen]
+					}
+				}
+				if tableMeta.TableName == "comment" || tableMeta.TableName == "community_comment" {
+					if len(tmpArr) > tableMeta.LineNum {
+						overLen := len(tmpArr) - tableMeta.LineNum
+						content := ""
+						for i := 0; i <= overLen; i++ {
+							content = content + tmpArr[16+i] + "/"
+						}
+						tmpArr[16] = content[:len(content)-1]
+						for i := 17 + overLen; i < len(tmpArr); i++ {
 							tmpArr[i-overLen] = tmpArr[i]
 						}
 						tmpArr = tmpArr[:len(tmpArr)-overLen]
@@ -293,18 +307,11 @@ var resolveCmd = &cobra.Command{
 						tmpArr = tmpArr[:len(tmpArr)-overLen]
 					}
 				}
-				if tableMeta.TableName == "comment" {
-					if len(tmpArr) > tableMeta.LineNum {
-						overLen := len(tmpArr) - tableMeta.LineNum
-						content := ""
-						for i := 0; i <= overLen; i++ {
-							content = content + tmpArr[16+i] + "/"
-						}
-						tmpArr[16] = content[:len(content)-1]
-						for i := 17 + overLen; i < len(tmpArr); i++ {
-							tmpArr[i-overLen] = tmpArr[i]
-						}
-						tmpArr = tmpArr[:len(tmpArr)-overLen]
+				if tableMeta.TableName == "friend_notify" {
+					if len(tmpArr) == 21 {
+						tmpArr = append(tmpArr, "", "")
+						tmpArr[22] = tmpArr[20]
+						tmpArr[20] = tmpArr[18]
 					}
 				}
 
