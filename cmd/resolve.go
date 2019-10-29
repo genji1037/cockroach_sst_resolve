@@ -328,6 +328,17 @@ var resolveCmd = &cobra.Command{
 						}
 					}
 				}
+				if tableMeta.TableName == "community" {
+					if strings.HasPrefix(tmpArr[20], "0x") {
+						valuebs, err := hex.DecodeString(tmpArr[20][2:])
+						if err != nil {
+							fmt.Println(err)
+						}
+						if err == nil {
+							tmpArr[20] = string(valuebs)
+						}
+					}
+				}
 
 				// validate line num
 				if len(tmpArr) != tableMeta.LineNum {
