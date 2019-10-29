@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"bytes"
+	"encoding/hex"
 	"fmt"
 	"github.com/genji1037/cockroach_sst_resolve/types"
 	"github.com/spf13/cobra"
@@ -312,6 +313,19 @@ var resolveCmd = &cobra.Command{
 						tmpArr = append(tmpArr, "", "")
 						tmpArr[22] = tmpArr[20]
 						tmpArr[20] = tmpArr[18]
+					}
+				}
+
+				// handle hex
+				if tableMeta.TableName == "moments" || tableMeta.TableName == "community" || tableMeta.TableName == "community_post" {
+					if strings.HasPrefix(tmpArr[12], "0x") {
+						valuebs, err := hex.DecodeString(tmpArr[12][2:])
+						if err != nil {
+							fmt.Println(err)
+						}
+						if err == nil {
+							tmpArr[12] = string(valuebs)
+						}
 					}
 				}
 
