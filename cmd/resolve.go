@@ -175,7 +175,7 @@ var resolveCmd = &cobra.Command{
 				}
 			} else {
 				tmpArr := strings.Split(string(line), "/")
-				if len(tmpArr) < 18 {
+				if len(tmpArr) < 17 {
 					fmt.Printf("[%d] len [%d] to small.\n", lineNo, len(tmpArr))
 					continue
 				}
@@ -250,7 +250,7 @@ var resolveCmd = &cobra.Command{
 						tmpArr[i-overLen] = tmpArr[i]
 					}
 					tmpArr = tmpArr[:len(tmpArr)-overLen]
-				} else if tmpArr[17] == "TUPLE" {
+				} else if len(tmpArr) > 17 && tmpArr[17] == "TUPLE" {
 					overLen := 9
 					for i := 7 + overLen; i < len(tmpArr); i++ {
 						tmpArr[i-overLen] = tmpArr[i]
