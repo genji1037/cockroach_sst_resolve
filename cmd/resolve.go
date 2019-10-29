@@ -175,7 +175,7 @@ var resolveCmd = &cobra.Command{
 				}
 			} else {
 				tmpArr := strings.Split(string(line), "/")
-				if len(tmpArr) < 15 {
+				if len(tmpArr) < 18 {
 					fmt.Printf("[%d] len [%d] to small.\n", lineNo, len(tmpArr))
 					continue
 				}
@@ -238,6 +238,24 @@ var resolveCmd = &cobra.Command{
 						tmpArr[i-overLen] = tmpArr[i]
 					}
 					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[15] == "TUPLE" {
+					overLen := 7
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[16] == "TUPLE" {
+					overLen := 8
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
+				} else if tmpArr[17] == "TUPLE" {
+					overLen := 9
+					for i := 7 + overLen; i < len(tmpArr); i++ {
+						tmpArr[i-overLen] = tmpArr[i]
+					}
+					tmpArr = tmpArr[:len(tmpArr)-overLen]
 				} else {
 					overLen := 1
 					for i := 7 + overLen; i < len(tmpArr); i++ {
@@ -261,17 +279,29 @@ var resolveCmd = &cobra.Command{
 						tmpArr = tmpArr[:len(tmpArr)-overLen]
 					}
 				}
-
-				//
 				if tableMeta.TableName == "community_file" {
 					if len(tmpArr) > tableMeta.LineNum {
-						overLen := len(tmpArr) - tableMeta.LineNum // 朋友圈内容含有/的长度会超出标准长度
+						overLen := len(tmpArr) - tableMeta.LineNum
 						content := ""
 						for i := 0; i <= overLen; i++ {
 							content = content + tmpArr[18+i] + "/"
 						}
 						tmpArr[18] = content[:len(content)-1]
 						for i := 19 + overLen; i < len(tmpArr); i++ {
+							tmpArr[i-overLen] = tmpArr[i]
+						}
+						tmpArr = tmpArr[:len(tmpArr)-overLen]
+					}
+				}
+				if tableMeta.TableName == "comment" {
+					if len(tmpArr) > tableMeta.LineNum {
+						overLen := len(tmpArr) - tableMeta.LineNum
+						content := ""
+						for i := 0; i <= overLen; i++ {
+							content = content + tmpArr[16+i] + "/"
+						}
+						tmpArr[16] = content[:len(content)-1]
+						for i := 17 + overLen; i < len(tmpArr); i++ {
 							tmpArr[i-overLen] = tmpArr[i]
 						}
 						tmpArr = tmpArr[:len(tmpArr)-overLen]
